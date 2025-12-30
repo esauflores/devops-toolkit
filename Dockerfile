@@ -1,21 +1,33 @@
+# ---------- shared OCI metadata ----------
+ARG OCI_SOURCE="https://github.com/esauflores/devops-toolkit"
+ARG OCI_DESCRIPTION="Reproducible DevOps toolkit using Docker, mise, and just"
+ARG OCI_LICENSES="MIT"
+
 # ---------- base ----------
 FROM debian:12.12-slim@sha256:d5d3f9c23164ea16f31852f95bd5959aad1c5e854332fe00f7b3a20fcc9f635c AS base
 
-LABEL org.opencontainers.image.title=devops-toolkit
-LABEL org.opencontainers.image.description="Reproducible DevOps toolkit using Docker, mise, and just"
-LABEL org.opencontainers.image.url=https://github.com/esauflores/devops-toolkit
-LABEL org.opencontainers.image.documentation=https://github.com/esauflores/devops-toolkit
+ARG OCI_SOURCE
+ARG OCI_DESCRIPTION
+ARG OCI_LICENSES
+
+LABEL org.opencontainers.image.source="${OCI_SOURCE}"
+LABEL org.opencontainers.image.description="${OCI_DESCRIPTION}"
+LABEL org.opencontainers.image.licenses="${OCI_LICENSES}"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-  ca-certificates curl git unzip xz-utils gnupg bash \
+  ca-certificates \
+  curl \
+  git \
+  unzip \
+  xz-utils \
+  gnupg \
+  bash \
   && rm -rf /var/lib/apt/lists/*
 
-# install mise
-ENV MISE_VERSION=v2025.11.10
+# ---------- mise ----------
 ENV MISE_DATA_DIR="/mise"
 ENV MISE_CONFIG_DIR="/mise"
 ENV MISE_CACHE_DIR="/mise/cache"
@@ -35,10 +47,26 @@ CMD ["bash"]
 # ---------- k8s ----------
 FROM base AS k8s
 
+ARG OCI_SOURCE
+ARG OCI_DESCRIPTION
+ARG OCI_LICENSES
+
+LABEL org.opencontainers.image.source="${OCI_SOURCE}"
+LABEL org.opencontainers.image.description="${OCI_DESCRIPTION}"
+LABEL org.opencontainers.image.licenses="${OCI_LICENSES}"
+
 RUN mise install kubectl helm
 
 # ---------- docker ----------
 FROM base AS docker
+
+ARG OCI_SOURCE
+ARG OCI_DESCRIPTION
+ARG OCI_LICENSES
+
+LABEL org.opencontainers.image.source="${OCI_SOURCE}"
+LABEL org.opencontainers.image.description="${OCI_DESCRIPTION}"
+LABEL org.opencontainers.image.licenses="${OCI_LICENSES}"
 
 RUN mise install docker-cli docker-compose docker-slim
 
@@ -49,15 +77,31 @@ RUN printf '#!/bin/sh\nexec docker-cli-plugin-docker-compose "$@"\n' \
 # ---------- iac ----------
 FROM base AS iac
 
-RUN mise install python pipx ansible terraform sst
+ARG OCI_SOURCE
+ARG OCI_DESCRIPTION
+ARG OCI_LICENSES
 
+LABEL org.opencontainers.image.source="${OCI_SOURCE}"
+LABEL org.opencontainers.image.description="${OCI_DESCRIPTION}"
+LABEL org.opencontainers.image.licenses="${OCI_LICENSES}"
+
+RUN mise install python pipx ansible terraform sst
 RUN sst version || true
 
 # ---------- dev ----------
 FROM base AS dev
+
+ARG OCI_SOURCE
+ARG OCI_DESCRIPTION
+ARG OCI_LICENSES
+
+LABEL org.opencontainers.image.source="${OCI_SOURCE}"
+LABEL org.opencontainers.image.description="${OCI_DESCRIPTION}"
+LABEL org.opencontainers.image.licenses="${OCI_LICENSES}"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   build-essential \
   && rm -rf /var/lib/apt/lists/*
 
 RUN mise install uv bun go rust
+
