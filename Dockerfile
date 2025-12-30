@@ -1,6 +1,11 @@
 # ---------- base ----------
 FROM debian:12.12-slim@sha256:d5d3f9c23164ea16f31852f95bd5959aad1c5e854332fe00f7b3a20fcc9f635c AS base
 
+LABEL org.opencontainers.image.title=devops-toolkit
+LABEL org.opencontainers.image.description="Reproducible DevOps toolkit using Docker, mise, and just"
+LABEL org.opencontainers.image.url=https://github.com/esauflores/devops-toolkit
+LABEL org.opencontainers.image.documentation=https://github.com/esauflores/devops-toolkit
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
