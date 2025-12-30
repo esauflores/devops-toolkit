@@ -1,5 +1,7 @@
 # DevOps Toolkit
 
+[![GHCR](https://img.shields.io/badge/container-ghcr.io-blue)](https://github.com/esauflores/devops-toolkit/pkgs/container/devops-toolkit)
+
 A reproducible, Docker-based **DevOps toolchain** powered by **mise** and **just**.
 This project bundles commonly used DevOps, Kubernetes, IaC, Docker, and development tools into modular Docker images that are easy to build, test, and publish.
 
@@ -7,11 +9,25 @@ The goal is simple: **consistent tooling, zero local setup pain**.
 
 ---
 
+## 📦 Container Image
+
+This repository publishes container images to **GitHub Container Registry (GHCR)**.
+
+| Image    | Description                         | Tools                                   | Pull                                                   |
+| -------- | ----------------------------------- | --------------------------------------- | ------------------------------------------------------ |
+| `base`   | Core utilities and security tooling | just, jq, yq, trivy, sops, age          | `docker pull ghcr.io/esauflores/devops-toolkit:base`   |
+| `k8s`    | Kubernetes client tooling           | kubectl, helm                           | `docker pull ghcr.io/esauflores/devops-toolkit:k8s`    |
+| `iac`    | Infrastructure as Code tooling      | terraform, ansible, sst                 | `docker pull ghcr.io/esauflores/devops-toolkit:iac`    |
+| `docker` | Docker ecosystem tooling            | docker-cli, docker-compose, docker-slim | `docker pull ghcr.io/esauflores/devops-toolkit:docker` |
+| `dev`    | Development toolchains              | go, rust, bun, uv                       | `docker pull ghcr.io/esauflores/devops-toolkit:dev`    |
+
+---
+
 ## ✨ Features
 
 - 📦 Multi-stage Docker images (build only what you need)
 - 🔁 Reproducible tool versions via `mise.toml`
-- 🧰 Opinionated DevOps stack (K8s, IaC, Docker, security tools)
+- 🧰 Opinionated DevOps stack (Ku8s, IaC, Docker, security tools)
 - ⚡ Simple workflows using `just`
 - 🧪 Built-in test commands for each image
 - 🚀 Ready for CI/CD usage
@@ -140,3 +156,11 @@ just test
 
 - Intentionally opinionated
 - Version changes happen only in `mise.toml`
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+You are free to use, modify, and distribute this project in accordance with the terms of the license.
