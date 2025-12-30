@@ -64,5 +64,5 @@ mise-check-updates:
 
 # Login to container registry 
 login: 
-  docker login ghrc.io
+  docker login ghcr.io
 
